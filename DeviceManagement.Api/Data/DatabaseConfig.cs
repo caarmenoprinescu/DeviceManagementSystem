@@ -1,15 +1,18 @@
+using DeviceManagement.Api.Data.Interfaces;
 using Microsoft.Data.SqlClient;
-
 namespace DeviceManagement.Api.Data;
 
-public class DatabaseConfig
+public class DatabaseConfig : IDbConnectionFactory
 {
-    public static readonly string ConnectionString = 
-        @"Server=localhost,1433;Database=DeviceManagementSystem;User Id=sa;Password=Parola@12345;TrustServerCertificate=True;";
+    private readonly string _connectionString;
 
-    public static SqlConnection GetDatabaseConnection()
+    public DatabaseConfig(IConfiguration configuration)
     {
-        return new SqlConnection(ConnectionString);
+        _connectionString = configuration.GetConnectionString("DefaultConnection");
     }
 
+    public SqlConnection CreateConnection()
+    {
+        return new SqlConnection(_connectionString);
+    }
 }
