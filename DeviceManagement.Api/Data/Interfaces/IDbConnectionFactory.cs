@@ -1,6 +1,8 @@
+using Microsoft.Data.SqlClient;
+
 namespace DeviceManagement.Api.Data.Interfaces;
 
-public class IDbConnectionFactory
+public interface IDbConnectionFactory
 {
-    
+    SqlConnection CreateConnection();
 }
