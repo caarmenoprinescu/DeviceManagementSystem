@@ -1,23 +1,30 @@
+using DeviceManagement.Api.Data;
+using DeviceManagement.Api.Data.Interfaces;
+using DeviceManagement.Api.Repositories;
+using DeviceManagement.Api.Repositories.Interfaces;
+using DeviceManagement.Api.Services;
+using DeviceManagement.Api.Services.Interfaces;
+
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddScoped<IDbConnectionFactory, DatabaseConfig>();
+builder.Services.AddScoped<IDeviceRepository, DeviceRepository>();
+builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IDeviceService, DeviceService>();
+builder.Services.AddScoped<IUserService, UserService>();
+
 var app = builder.Build();
 
-// Swagger
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
 }
 
-// app.UseHttpsRedirection(); // optional
-
 app.UseAuthorization();
-
 app.MapControllers();
-
 app.Run();
