@@ -6,8 +6,8 @@ namespace DeviceManagement.Api.Repositories.Interfaces;
 public interface IDeviceRepository
 {
     Task<List<Device>> GetAllDevicesAsync();
-    Task<Device> GetDeviceByIdAsync(int id);
-    Task AddDeviceAsync(DeviceDTO device);
-    Task UpdateDeviceAsync(DeviceDTO device);
-    Task DeleteDeviceAsync(int id);
+    Task<Device?> GetDeviceByIdAsync(int id);
+    Task<int> AddDeviceAsync(DeviceDTO device);
+    Task<int> UpdateDeviceAsync(int id, DeviceDTO device);
+    Task<int> DeleteDeviceAsync(int id);
 }
