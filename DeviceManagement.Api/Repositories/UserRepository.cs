@@ -33,11 +33,17 @@ public class UserRepository : IUserRepository
         await connection.ExecuteAsync(query, user);
     }
 
-    public async Task UpdateUserAsync(UserDTO user)
+    public async Task UpdateUserAsync(int id, UserDTO user)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query = "UPDATE Users SET name = @Name, role = @Role, location = @Location WHERE id = @Id";
-        await connection.ExecuteAsync(query, user);
+        await connection.ExecuteAsync(query, new
+        {
+            Id = id,
+            user.Name,
+            user.Role,
+            user.Location
+        });
     }
 
     public async Task DeleteUserAsync(int id)

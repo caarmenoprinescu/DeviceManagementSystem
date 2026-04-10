@@ -8,12 +8,13 @@ namespace DeviceManagement.Api.Repositories;
 
 public class DeviceRepository : IDeviceRepository
 {
+    private const string SelectQuery = "SELECT id, name, d_type AS Type, os AS OperatingSystem, os_version AS OsVersion, processor, ram, description, current_user_id AS UserId, manufacturer FROM Devices";
+
     public async Task<List<Device>> GetAllDevicesAsync()
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
 
-        var query = "SELECT * FROM Devices";
-        var devices = (await connection.QueryAsync<Device>(query)).ToList();
+        var devices = (await connection.QueryAsync<Device>(SelectQuery)).ToList();
 
         return devices;
     }
@@ -22,9 +23,8 @@ public class DeviceRepository : IDeviceRepository
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
 
-        var query = "SELECT * FROM Devices WHERE id = @id";
+        var query = SelectQuery + " WHERE id = @id";
         var device = await connection.QueryFirstOrDefaultAsync<Device>(query, new { id });
-
         return device;
     }
 
@@ -36,12 +36,24 @@ public class DeviceRepository : IDeviceRepository
         await connection.ExecuteAsync(query, device);
     }
 
-    public async Task UpdateDeviceAsync(DeviceDTO device)
+    public async Task UpdateDeviceAsync(int id, DeviceDTO device)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query =
             "UPDATE Devices SET name = @Name, d_type = @Type, os = @OperatingSystem, os_version = @OsVersion, processor = @Processor, ram = @Ram, description = @Description, current_user_id = @UserId, manufacturer = @Manufacturer WHERE id = @Id";
-        await connection.ExecuteAsync(query, device);
+        await connection.ExecuteAsync(query, new
+        {
+            Id = id,
+            device.Name,
+            device.Type,
+            device.OperatingSystem,
+            device.OsVersion,
+            device.Processor,
+            device.Ram,
+            device.Description,
+            device.UserId,
+            device.Manufacturer
+        });
     }
 
     public async Task DeleteDeviceAsync(int id)
