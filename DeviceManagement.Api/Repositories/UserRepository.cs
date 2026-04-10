@@ -17,7 +17,7 @@ public class UserRepository : IUserRepository
         return users;
     }
 
-    public async Task<User> GetUserByIdAsync(int id)
+    public async Task<User?> GetUserByIdAsync(int id)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query = "SELECT * FROM Users WHERE id = @id";
@@ -26,30 +26,34 @@ public class UserRepository : IUserRepository
         return user;
     }
 
-    public async Task AddUserAsync(UserDTO user)
+    public async Task<int> AddUserAsync(UserDTO user)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
-        var query = "INSERT INTO Users (name, role, location) VALUES (@Name, @Role, @Location)";
-        await connection.ExecuteAsync(query, user);
+        var query =
+            "INSERT INTO Users (name, role, location) VALUES (@Name, @Role, @Location); Select SCOPE_IDENTITY();";
+        var newId = await connection.ExecuteScalarAsync<int>(query, user);
+        return newId;
     }
 
-    public async Task UpdateUserAsync(int id, UserDTO user)
+    public async Task<int> UpdateUserAsync(int id, UserDTO user)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query = "UPDATE Users SET name = @Name, role = @Role, location = @Location WHERE id = @Id";
-        await connection.ExecuteAsync(query, new
+        var rowsAffected = await connection.ExecuteAsync(query, new
         {
             Id = id,
             user.Name,
             user.Role,
             user.Location
         });
+        return rowsAffected;
     }
 
-    public async Task DeleteUserAsync(int id)
+    public async Task<int> DeleteUserAsync(int id)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query = "DELETE FROM Users WHERE id = @id";
-        await connection.ExecuteAsync(query, new { id });
+        var rowsAffected = await connection.ExecuteAsync(query, new { id });
+        return rowsAffected;
     }
 }

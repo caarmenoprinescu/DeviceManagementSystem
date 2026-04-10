@@ -19,7 +19,7 @@ public class DeviceRepository : IDeviceRepository
         return devices;
     }
 
-    public async Task<Device> GetDeviceByIdAsync(int id)
+    public async Task<Device?> GetDeviceByIdAsync(int id)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
 
@@ -28,20 +28,21 @@ public class DeviceRepository : IDeviceRepository
         return device;
     }
 
-    public async Task AddDeviceAsync(DeviceDTO device)
+    public async Task<int> AddDeviceAsync(DeviceDTO device)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query =
-            "INSERT INTO Devices (name, d_type, os, os_version, processor, ram, description, current_user_id, manufacturer) VALUES (@Name, @Type, @OperatingSystem, @OsVersion, @Processor, @Ram, @Description, @UserId, @Manufacturer)";
-        await connection.ExecuteAsync(query, device);
+            "INSERT INTO Devices (name, d_type, os, os_version, processor, ram, description, current_user_id, manufacturer) VALUES (@Name, @Type, @OperatingSystem, @OsVersion, @Processor, @Ram, @Description, @UserId, @Manufacturer); SELECT SCOPE_IDENTITY();";
+        var newId = await connection.ExecuteScalarAsync<int>(query, device);
+        return newId;
     }
 
-    public async Task UpdateDeviceAsync(int id, DeviceDTO device)
+    public async Task<int> UpdateDeviceAsync(int id, DeviceDTO device)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query =
             "UPDATE Devices SET name = @Name, d_type = @Type, os = @OperatingSystem, os_version = @OsVersion, processor = @Processor, ram = @Ram, description = @Description, current_user_id = @UserId, manufacturer = @Manufacturer WHERE id = @Id";
-        await connection.ExecuteAsync(query, new
+        var rowsAffected = await connection.ExecuteAsync(query, new
         {
             Id = id,
             device.Name,
@@ -54,12 +55,14 @@ public class DeviceRepository : IDeviceRepository
             device.UserId,
             device.Manufacturer
         });
+        return rowsAffected;
     }
 
-    public async Task DeleteDeviceAsync(int id)
+    public async Task<int> DeleteDeviceAsync(int id)
     {
         using var connection = DatabaseConfig.GetDatabaseConnection();
         var query = "DELETE FROM Devices WHERE id = @id";
-        await connection.ExecuteAsync(query, new { id });
+        var rowsAffected = await connection.ExecuteAsync(query, new { id });
+        return rowsAffected;
     }
 }
