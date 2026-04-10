@@ -21,7 +21,7 @@ public class DevicesController(IDeviceService deviceService) : ControllerBase
     public async Task<IActionResult> GetDeviceById(int id)
     {
         var device = await _deviceService.GetDeviceByIdAsync(id);
-        if (device == null) return NotFound();
+        if (device == null) return NotFound($"Device with id {id} not found.");
         return Ok(device);
     }
 
