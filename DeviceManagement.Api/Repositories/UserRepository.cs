@@ -1,16 +1,20 @@
 using Dapper;
 using DeviceManagement.Api.Data;
+using DeviceManagement.Api.Data.Interfaces;
 using DeviceManagement.Api.DTOs;
 using DeviceManagement.Api.Models;
 using DeviceManagement.Api.Repositories.Interfaces;
 
 namespace DeviceManagement.Api.Repositories;
 
-public class UserRepository : IUserRepository
+public class UserRepository(IDbConnectionFactory dbConfig) : IUserRepository
 {
+    private readonly IDbConnectionFactory _dbConfig = dbConfig;
+
+
     public async Task<List<User>> GetAllUsersAsync()
     {
-        using var connection = DatabaseConfig.GetDatabaseConnection();
+        using var connection = _dbConfig.CreateConnection();
         var query = "SELECT * FROM Users";
         var users = (await connection.QueryAsync<User>(query)).ToList();
 
@@ -19,7 +23,7 @@ public class UserRepository : IUserRepository
 
     public async Task<User?> GetUserByIdAsync(int id)
     {
-        using var connection = DatabaseConfig.GetDatabaseConnection();
+        using var connection = _dbConfig.CreateConnection();
         var query = "SELECT * FROM Users WHERE id = @id";
         var user = await connection.QueryFirstOrDefaultAsync<User>(query, new { id });
 
@@ -28,7 +32,7 @@ public class UserRepository : IUserRepository
 
     public async Task<int> AddUserAsync(UserDTO user)
     {
-        using var connection = DatabaseConfig.GetDatabaseConnection();
+        using var connection = _dbConfig.CreateConnection();
         var query =
             "INSERT INTO Users (name, role, location) VALUES (@Name, @Role, @Location); Select SCOPE_IDENTITY();";
         var newId = await connection.ExecuteScalarAsync<int>(query, user);
@@ -37,7 +41,7 @@ public class UserRepository : IUserRepository
 
     public async Task<int> UpdateUserAsync(int id, UserDTO user)
     {
-        using var connection = DatabaseConfig.GetDatabaseConnection();
+        using var connection = _dbConfig.CreateConnection();
         var query = "UPDATE Users SET name = @Name, role = @Role, location = @Location WHERE id = @Id";
         var rowsAffected = await connection.ExecuteAsync(query, new
         {
@@ -51,7 +55,7 @@ public class UserRepository : IUserRepository
 
     public async Task<int> DeleteUserAsync(int id)
     {
-        using var connection = DatabaseConfig.GetDatabaseConnection();
+        using var connection = _dbConfig.CreateConnection();
         var query = "DELETE FROM Users WHERE id = @id";
         var rowsAffected = await connection.ExecuteAsync(query, new { id });
         return rowsAffected;
