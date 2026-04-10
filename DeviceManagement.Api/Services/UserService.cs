@@ -1,8 +1,10 @@
 using DeviceManagement.Api.DTOs;
 using DeviceManagement.Api.Models;
 using DeviceManagement.Api.Repositories.Interfaces;
+using DeviceManagement.Api.Services.Interfaces;
 
-namespace DeviceManagement.Api.Services.Interfaces;
+namespace DeviceManagement.Api.Services;
+
 public class UserService(IUserRepository userRepository) : IUserService
 {
     private readonly IUserRepository _userRepository = userRepository;
@@ -12,23 +14,29 @@ public class UserService(IUserRepository userRepository) : IUserService
         return await _userRepository.GetAllUsersAsync();
     }
 
-    public async Task<User> GetUserByIdAsync(int id)
+    public async Task<User?> GetUserByIdAsync(int id)
     {
-       return await _userRepository.GetUserByIdAsync(id);
+        return await _userRepository.GetUserByIdAsync(id);
     }
 
-    public async Task AddUserAsync(UserDTO user)
+    public async Task<int> AddUserAsync(UserDTO user)
     {
-        await _userRepository.AddUserAsync(user);
+       return await _userRepository.AddUserAsync(user);
     }
 
-    public async Task UpdateUserAsync(UserDTO user)
+    public async Task UpdateUserAsync(int id,UserDTO user)
     {
-        await _userRepository.UpdateUserAsync(user);
+      var rows = await  _userRepository.UpdateUserAsync(id,user);
+      if(rows == 0)
+          throw new KeyNotFoundException($"User with id {id} not found");
+  
     }
 
     public async Task DeleteUserAsync(int id)
-    {
-        await _userRepository.DeleteUserAsync(id);
+    { 
+        var rows = await  _userRepository.DeleteUserAsync(id);
+        if(rows == 0)
+            throw new KeyNotFoundException($"User with id {id} not found");
+        
     }
 }
