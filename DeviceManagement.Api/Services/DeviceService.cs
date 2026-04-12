@@ -2,6 +2,7 @@ using DeviceManagement.Api.DTOs;
 using DeviceManagement.Api.Models;
 using DeviceManagement.Api.Repositories.Interfaces;
 using DeviceManagement.Api.Services.Interfaces;
+using Microsoft.Data.SqlClient;
 
 namespace DeviceManagement.Api.Services;
 
@@ -21,7 +22,14 @@ public class DeviceService(IDeviceRepository deviceRepository) : IDeviceService
 
     public async Task<int> AddDeviceAsync(DeviceDTO device)
     {
-        return await _deviceRepository.AddDeviceAsync(device);
+        try
+        {
+            return await _deviceRepository.AddDeviceAsync(device);
+        }
+        catch (SqlException ex) when (ex.Number == 2627)
+        {
+            throw new Exception("Device already exists");
+        }
     }
 
     public async Task UpdateDeviceAsync(int id,DeviceDTO device)
