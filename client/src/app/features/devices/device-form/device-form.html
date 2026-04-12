@@ -1,0 +1,72 @@
+<div class="form-container">
+  <div class="form-card">
+    <h1 class="form-title">{{ isEditMode ? 'Edit Device' : 'Add Device' }}</h1>
+
+    <form (ngSubmit)="onSubmit()" class="device-form">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="device.name" name="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Manufacturer</mat-label>
+          <input matInput [(ngModel)]="device.manufacturer" name="manufacturer" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Operating System</mat-label>
+          <input matInput [(ngModel)]="device.operatingSystem" name="operatingSystem" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>OS Version</mat-label>
+          <input matInput [(ngModel)]="device.osVersion" name="osVersion" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Processor</mat-label>
+          <input matInput [(ngModel)]="device.processor" name="processor" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>RAM (GB)</mat-label>
+          <input matInput type="number" [(ngModel)]="device.ram" name="ram" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Type</mat-label>
+          <mat-select [(ngModel)]="device.type" name="type" required>
+            <mat-option [value]="0">Phone</mat-option>
+            <mat-option [value]="1">Tablet</mat-option>
+          </mat-select>
+        </mat-form-field>
+        <mat-form-field appearance="outline" *ngIf="isEditMode">
+          <mat-label>Assigned User</mat-label>
+          <mat-select [(ngModel)]="device.userId" name="userId">
+            <mat-option [value]="null">Unassigned</mat-option>
+            <mat-option *ngFor="let user of users" [value]="user.id">{{ user.name }}</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div>
+
+      <mat-form-field appearance="outline" class="form-field full-width">
+        <mat-label>Description</mat-label>
+        <textarea
+          matInput
+          [(ngModel)]="device.description"
+          name="description"
+          rows="4"
+          required
+        ></textarea>
+      </mat-form-field>
+
+      <div class="form-actions">
+        <button mat-button type="button" routerLink="/devices">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">
+          {{ isEditMode ? 'Update' : 'Create' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
