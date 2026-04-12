@@ -2,4 +2,10 @@ bin/
 obj/
 /packages/
 riderModule.iml
-/_ReSharper.Caches/client/.vscode/
+/_ReSharper.Caches/
+.DS_Store
+**/.DS_Store
+.idea/
+*.DotSettings.user
+DeviceManagement.Api/appsettings.Development.json
+DeviceManagement.Api/*.http
