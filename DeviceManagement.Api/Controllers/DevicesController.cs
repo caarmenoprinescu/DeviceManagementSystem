@@ -28,10 +28,17 @@ public class DevicesController(IDeviceService deviceService) : ControllerBase
     [HttpPost]
     public async Task<IActionResult> AddDevice([FromBody] DeviceDTO device)
     {
-        var id = await _deviceService.AddDeviceAsync(device);
-        var created = await _deviceService.GetDeviceByIdAsync(id);
-        return CreatedAtAction(nameof(GetDeviceById), new { id }, created);
-    }
+        try
+        {
+            var id = await _deviceService.AddDeviceAsync(device);
+            var created = await _deviceService.GetDeviceByIdAsync(id);
+
+            return CreatedAtAction(nameof(GetDeviceById), new { id }, created);
+        }
+        catch (Exception ex)
+        {
+            return BadRequest(ex.Message);
+        }  }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateDevice(int id, DeviceDTO device)
