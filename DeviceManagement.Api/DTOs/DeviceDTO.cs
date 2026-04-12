@@ -9,7 +9,7 @@ public class DeviceDTO
 
     [Required] public string Manufacturer { get; set; } = string.Empty;
 
-   public DeviceType Type { get; set; }
+    public DeviceType Type { get; set; }
 
     [Required] public string OperatingSystem { get; set; } = string.Empty;
 
@@ -21,5 +21,5 @@ public class DeviceDTO
 
     [Required] public string Description { get; set; } = string.Empty;
 
-     public int UserId { get; set; }
+    public int? UserId { get; set; }
 }
