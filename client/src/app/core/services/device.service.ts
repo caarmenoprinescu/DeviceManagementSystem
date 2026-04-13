@@ -23,7 +23,7 @@ export class DeviceService {
     return this.http.post<Device>(this.apiUrl, device);
   }
 
-  update(id: number, device:DeviceRequest): Observable<void> {
+  update(id: number, device: DeviceRequest): Observable<void> {
     return this.http.put<void>(`${this.apiUrl}/${id}`, device);
   }
 

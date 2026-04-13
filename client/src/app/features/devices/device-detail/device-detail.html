@@ -1,12 +1,9 @@
 <div class="page-container" *ngIf="device$ | async as device">
-  
   <div class="page-header">
     <h1 class="page-title">{{ device.name }}</h1>
-    
+
     <div class="header-actions">
-      <button mat-button routerLink="/devices">
-        <mat-icon>arrow_back</mat-icon> Back
-      </button>
+      <button mat-button routerLink="/devices"><mat-icon>arrow_back</mat-icon> Back</button>
       <button mat-raised-button color="primary" [routerLink]="['/devices', device.id, 'edit']">
         <mat-icon>edit</mat-icon> Edit
       </button>
@@ -14,9 +11,7 @@
   </div>
 
   <div class="details-card">
-    
     <div class="details-grid">
-      
       <div class="detail-item">
         <span class="detail-label">Manufacturer</span>
         <span class="detail-value">{{ device.manufacturer }}</span>
@@ -25,7 +20,9 @@
       <div class="detail-item">
         <span class="detail-label">Type</span>
         <span class="detail-value">
-          <mat-icon class="icon-subtle">{{ device.type === 0 ? 'smartphone' : 'tablet_mac' }}</mat-icon>
+          <mat-icon class="icon-subtle">{{
+            device.type === 0 ? 'smartphone' : 'tablet_mac'
+          }}</mat-icon>
           {{ device.type === 0 ? 'Phone' : 'Tablet' }}
         </span>
       </div>
@@ -52,10 +49,9 @@
         <span class="detail-label">Assigned To</span>
         <span class="detail-value">
           <mat-icon class="icon-subtle">person</mat-icon>
-          {{ device.userId ?? 'Unassigned' }}
+          {{ device.userId == 0 ? 'Unassigned' : device.userId  }}
         </span>
       </div>
-
     </div>
 
     <mat-divider class="divider"></mat-divider>
@@ -64,6 +60,5 @@
       <span class="detail-label">Description</span>
       <p class="detail-description">{{ device.description }}</p>
     </div>
-
   </div>
 </div>
