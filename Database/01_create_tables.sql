@@ -1,16 +1,25 @@
-CREATE DATABASE DeviceManagementSystem
-Use DeviceManagementSystem
-go
+IF NOT EXISTS (SELECT * FROM sys.databases WHERE name = 'DeviceManagementSystem')
+BEGIN
+    CREATE DATABASE DeviceManagementSystem
+END
+GO
 
+USE DeviceManagementSystem
+GO
+
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Users')
+BEGIN
 CREATE TABLE Users(
                       id int primary key identity (1,1),
                       name varchar(100) not null,
                       role varchar(50) not null,
                       location varchar(100) not null
-
 )
-go
+END
+GO
 
+IF NOT EXISTS (SELECT * FROM sys.tables WHERE name = 'Devices')
+BEGIN
 CREATE TABLE Devices(
                         id int primary key identity (1,1),
                         name varchar(100) not null,
@@ -22,4 +31,5 @@ CREATE TABLE Devices(
                         description varchar(255) not null,
                         current_user_id int NULL references Users(id)
 )
-go
+END
+GO
