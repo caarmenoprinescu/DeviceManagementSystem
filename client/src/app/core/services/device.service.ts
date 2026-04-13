@@ -30,4 +30,7 @@ export class DeviceService {
   delete(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/${id}`);
   }
+  generateDescription(data: any): Observable<string> {
+    return this.http.post(`${this.apiUrl}/generate-description`, data, { responseType: 'text' });
+  }
 }
