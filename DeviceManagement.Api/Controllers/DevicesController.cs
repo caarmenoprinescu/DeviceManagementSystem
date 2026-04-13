@@ -8,10 +8,10 @@ namespace DeviceManagement.Api.Controllers;
 [Authorize]
 [ApiController]
 [Route("api/[controller]")]
-public class DevicesController(IDeviceService deviceService) : ControllerBase
+public class DevicesController(IDeviceService deviceService, IDescriptionService descriptionService) : ControllerBase
 {
     private readonly IDeviceService _deviceService = deviceService;
-
+    private readonly IDescriptionService _descriptionService = descriptionService;
     [HttpGet]
     public async Task<IActionResult> GetDevices()
     {
@@ -69,5 +69,19 @@ public class DevicesController(IDeviceService deviceService) : ControllerBase
         {
             return NotFound(ex.Message);
         }
+    }
+    [HttpPost("generate-description")]
+    [AllowAnonymous]
+    public async Task<IActionResult> GenerateDescription([FromBody] GenerateDescriptionDTO dto)
+    {
+        
+        var prompt = $"Generate a short, professional and user friendly description for a device with these specs: " +
+                     $"Name: {dto.Name}, Manufacturer: {dto.Manufacturer}, Type: {dto.Type}, " +
+                     $"OS: {dto.OperatingSystem}, Processor: {dto.Processor}, RAM: {dto.Ram}GB. " +
+                     $"Keep it under 2 sentences.  Take as example for the following device Input: Name – iPhone 17 Pro, Manufacturer – Apple, OS – iOS, Type – phone, RAM – 12GB, Processor – A19 Pro this output: “A high-performance Apple smartphone running iOS, suitable for daily business use.";
+
+        var description = await _descriptionService.GenerateDescriptionAsync(prompt);
+       
+        return Ok(description);
     }
 }
