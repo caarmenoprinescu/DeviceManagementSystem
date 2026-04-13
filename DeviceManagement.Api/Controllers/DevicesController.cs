@@ -1,9 +1,11 @@
 using DeviceManagement.Api.DTOs;
 using DeviceManagement.Api.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace DeviceManagement.Api.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("api/[controller]")]
 public class DevicesController(IDeviceService deviceService) : ControllerBase
@@ -38,7 +40,8 @@ public class DevicesController(IDeviceService deviceService) : ControllerBase
         catch (Exception ex)
         {
             return BadRequest(ex.Message);
-        }  }
+        }
+    }
 
     [HttpPut("{id}")]
     public async Task<IActionResult> UpdateDevice(int id, DeviceDTO device)
