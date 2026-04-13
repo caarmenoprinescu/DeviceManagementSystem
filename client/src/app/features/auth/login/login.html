@@ -1,0 +1,38 @@
+<div class="auth-wrapper">
+  <div class="auth-card">
+    
+    <h1 class="auth-title">Login</h1>
+
+    <form (ngSubmit)="login()" class="auth-form">
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Email</mat-label>
+        <mat-icon matPrefix class="icon-subtle">email</mat-icon>
+        <input matInput type="email" [(ngModel)]="loginData.email" name="email" required>
+      </mat-form-field>
+
+      <mat-form-field appearance="outline" class="form-field">
+        <mat-label>Password</mat-label>
+        <mat-icon matPrefix class="icon-subtle">lock</mat-icon>
+        <input matInput type="password" [(ngModel)]="loginData.password" name="password" required>
+      </mat-form-field>
+
+      <div class="error-box" *ngIf="errorMessage">
+        <mat-icon>error_outline</mat-icon>
+        <span>{{ errorMessage }}</span>
+      </div>
+
+      <div class="auth-actions">
+        <button mat-raised-button color="primary" type="submit" class="submit-btn">
+          Login
+        </button>
+        
+        <div class="auth-links">
+          <span>Don't have an account?</span>
+          <a routerLink="/auth/register" class="link">Register here</a>
+        </div>
+      </div>
+
+    </form>
+  </div>
+</div>
