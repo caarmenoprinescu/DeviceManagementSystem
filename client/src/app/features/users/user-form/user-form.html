@@ -1,0 +1,29 @@
+<div class="form-container">
+  <div class="form-card">
+    <h1 class="form-title">Edit User</h1>
+
+    <form (ngSubmit)="onSubmit()" class="user-form">
+      <div class="form-grid">
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Name</mat-label>
+          <input matInput [(ngModel)]="user.name" name="name" required />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Role</mat-label>
+          <input matInput [(ngModel)]="user.role" name="role" readonly />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="form-field">
+          <mat-label>Location</mat-label>
+          <input matInput [(ngModel)]="user.location" name="location" required />
+        </mat-form-field>
+      </div>
+
+      <div class="form-actions">
+        <button mat-button type="button" routerLink="/users">Cancel</button>
+        <button mat-raised-button color="primary" type="submit">Update</button>
+      </div>
+    </form>
+  </div>
+</div>

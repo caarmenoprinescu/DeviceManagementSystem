@@ -1,0 +1,47 @@
+<div class="page-container" *ngIf="user$ | async as user">
+  
+  <div class="page-header">
+    <h1 class="page-title">{{ user.name }}</h1>
+    
+    <div class="header-actions">
+      <button mat-button routerLink="/users">
+        <mat-icon>arrow_back</mat-icon> Back
+      </button>
+      <button mat-raised-button color="primary" [routerLink]="['/users', user.id, 'edit']">
+        <mat-icon>edit</mat-icon> Edit
+      </button>
+    </div>
+  </div>
+
+  <div class="details-card">
+    
+    <div class="details-grid">
+      
+      <div class="detail-item">
+        <span class="detail-label">Name</span>
+        <span class="detail-value">
+          <mat-icon class="icon-subtle">person</mat-icon>
+          {{ user.name }}
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Location</span>
+        <span class="detail-value">
+          <mat-icon class="icon-subtle">location_on</mat-icon>
+          {{ user.location }}
+        </span>
+      </div>
+
+      <div class="detail-item">
+        <span class="detail-label">Role</span>
+        <span class="detail-value">
+          <mat-icon class="icon-subtle">badge</mat-icon>
+          {{ user.role }}
+        </span>
+      </div>
+
+    </div>
+
+  </div>
+</div>
