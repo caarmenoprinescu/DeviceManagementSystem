@@ -92,16 +92,16 @@ export class DeviceForm {
   }
 
   create(): void {
-  this.deviceService.create(this.device).subscribe({
-    next: () => {
-      alert("Device created successfully!");
-      this.router.navigate(['/devices']);
-    },
-    error: (err) => {
-      alert(err.error); 
-    }
-  });
-}
+    this.deviceService.create(this.device).subscribe({
+      next: () => {
+        alert('Device created successfully!');
+        this.router.navigate(['/devices']);
+      },
+      error: (err) => {
+        alert(err.error);
+      },
+    });
+  }
   update(): void {
     this.deviceService.update(this.id, this.device).subscribe({
       next: () => {
@@ -114,5 +114,18 @@ export class DeviceForm {
       },
     });
   }
-
+  generateDescription(): void {
+    this.deviceService
+      .generateDescription({
+        name: this.device.name,
+        manufacturer: this.device.manufacturer,
+        type: this.device.type === 0 ? 'phone' : 'tablet',
+        operatingSystem: this.device.operatingSystem,
+        processor: this.device.processor,
+        ram: this.device.ram,
+      })
+      .subscribe((description) => {
+        this.device.description = description;
+      });
+  }
 }
