@@ -12,7 +12,7 @@ import { MatDivider } from '@angular/material/divider';
 
 @Component({
   selector: 'app-device-detail',
-  imports: [CommonModule, RouterModule,MatCardModule, MatDivider , MatButtonModule, MatIconModule],
+  imports: [CommonModule, RouterModule, MatCardModule, MatDivider, MatButtonModule, MatIconModule],
   templateUrl: './device-detail.html',
   styleUrl: './device-detail.scss',
 })
@@ -39,4 +39,5 @@ export class DeviceDetail {
     const id = Number(this.route.snapshot.paramMap.get('id'));
     this.device$ = this.deviceService.getById(id);
   }
+
 }
