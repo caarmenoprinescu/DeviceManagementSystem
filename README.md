@@ -173,8 +173,8 @@ dotnet test
 ### Auth
 | Method | Endpoint | Auth Required | Description |
 |--------|----------|---------------|-------------|
-| POST | /api/auth/register | No | Register a new user |
-| POST | /api/auth/login | No | Login and receive JWT token |
+| POST | /auth/register | No | Register a new user |
+| POST | /auth/login | No | Login and receive JWT token |
 
 ### Devices
 | Method | Endpoint | Auth Required | Description |
