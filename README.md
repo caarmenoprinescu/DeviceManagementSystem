@@ -4,7 +4,6 @@ A full-stack web application for tracking company-owned mobile devices, their de
 
 **GitHub Repository:** https://github.com/caarmenoprinescu/DeviceManagementSystem
 
-**Video Demo:** *(link to be added)*
 
 ---
 
